@@ -1,6 +1,7 @@
 import itertools
 import subprocess
 import sys
+import time
 from collections import defaultdict
 
 scanners = defaultdict(int)
@@ -8,7 +9,9 @@ score=0
 #GET INPUT
 day='15'
 #p = subprocess.run("bash -c './p_data.sh "+day+" true' ",shell=True)
-input = open('./input_d_'+day+'.txt').read().strip()
+start=time.time();
+input = open('../input_d_'+day+'.txt').read().strip()
+
 
 #PARSE INPUT
 lines=[e for e in input.split('\n')]
@@ -73,6 +76,7 @@ for c in itertools.product(plus_diags, minus_diags):
 if candidate_ok:
     print(f'Solution found in interior of grid {(x,y)}')
     print(x*4000000+y)
+    print(time.time()-start);
     sys.exit()
 
 #case2 and 3
