@@ -9,7 +9,7 @@ vecadd = lambda *v: tuple(sum(x) for x in zip(*v))
 day='24'
 #p = subprocess.run("bash -c './p_data.sh "+day+" true' ",shell=True)
 
-input = open('./input_d_'+day+'.txt').read()
+input = open('../input_d_'+day+'.txt').read()
 
 ##PARSE INPUT
 lines=[e for e in input.split('\n')]
@@ -25,7 +25,7 @@ matrix_empty=[[list(lines[y])[x] if len(list(lines[y]))>x and list(lines[y])[x] 
 # def visualize2(matrix):
 #     print("\n".join(["".join([matrix[y][x]  for x in range(0,len(matrix[0]))]) for y in range(0,col_length)]))
 
-all_dirs=[(-1,0),(0,1),(1,0),(0,-1),(0,0)]
+all_dirs=[(0,1),(1,0),(0,0),(-1,0),(0,-1)]
 
 max_distinct_blizzard_state_count=math.lcm(row_length-2,col_length-2)
 matrices = [matrix_orig]
