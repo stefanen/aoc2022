@@ -82,7 +82,7 @@ def solve(minerals, robots, next_robot_to_buy, time_left, bid, b):
 
 parsed=parsed[0:30]
 best_seen=defaultdict(int)
-best=defaultdict(int)
+best_length_seen=defaultdict(int)
 for nextr in ["OR","CL"]:
 
     for b in parsed:
@@ -91,11 +91,11 @@ for nextr in ["OR","CL"]:
         #print(b)
         best_score=solve(res, robots, nextr, 24, b[0], b)
         #print(best_score)
-        best[b[0]]=max(best[b[0]],best_score*b[0])
+        best_length_seen[b[0]]=max(best_length_seen[b[0]], best_score * b[0])
 
-print(best)
+print(best_length_seen)
 s=0
-for k,v in sorted(best.items()):
+for k,v in sorted(best_length_seen.items()):
     s+=v
 print("part1")
 print(s)
@@ -104,7 +104,7 @@ print(s)
 
 parsed=parsed[0:3]
 best_seen=defaultdict(int)
-best=defaultdict(int)
+best_length_seen=defaultdict(int)
 for nextr in ["OR","CL"]:
 
     for b in parsed:
@@ -113,10 +113,10 @@ for nextr in ["OR","CL"]:
         #print(b)
         best_score=solve(res, robots, nextr, 32, b[0], b)
         #print(best_score)
-        best[b[0]]=max(best[b[0]],best_score)
+        best_length_seen[b[0]]=max(best_length_seen[b[0]], best_score)
 
-print(best)
+print(best_length_seen)
 product=1
-for k,v in sorted(best.items()):
+for k,v in sorted(best_length_seen.items()):
     product*=v
 print(product)
