@@ -2,13 +2,14 @@ import copy
 import functools
 import math
 import sys
+import time
 
 vecadd = lambda *v: tuple(sum(x) for x in zip(*v))
 
 ##GET INPUT
 day='24'
 #p = subprocess.run("bash -c './p_data.sh "+day+" true' ",shell=True)
-
+start1=time.time_ns()
 input = open('../input_d_'+day+'.txt').read()
 
 ##PARSE INPUT
@@ -26,6 +27,8 @@ matrix_empty=[[list(lines[y])[x] if len(list(lines[y]))>x and list(lines[y])[x] 
 #     print("\n".join(["".join([matrix[y][x]  for x in range(0,len(matrix[0]))]) for y in range(0,col_length)]))
 
 all_dirs=[(0,1),(1,0),(0,0),(-1,0),(0,-1)]
+
+start5=time.time_ns()
 
 max_distinct_blizzard_state_count=math.lcm(row_length-2,col_length-2)
 matrices = [matrix_orig]
@@ -52,24 +55,26 @@ for i in range(1,max_distinct_blizzard_state_count):
             next_matrix[new_y][new_x]="x"
     matrices.append(next_matrix)
     #visualize2(next_matrix)
+start6=time.time_ns()
+print((start6-start5)//1000000)
 
 def manh_d(v1,v2):
     return abs(v1[0]-v2[0])+abs(v1[1]-v2[1])
 
 @functools.cache
-def solve(curr, end, time):
+def solve(curr, end, time_passed):
     #print(curr,time)
     global best_length_seen
 
     if curr==end:
         #print(time)
-        best_length_seen=min(best_length_seen, time)
-        return time
-    if time+manh_d(end,curr)>=best_length_seen:
+        best_length_seen=min(best_length_seen, time_passed)
+        return time_passed
+    if time_passed+manh_d(end, curr)>=best_length_seen:
         #TODO
         return best_length_seen
     cands = []
-    next_time_modded=(time+1)%max_distinct_blizzard_state_count
+    next_time_modded= (time_passed + 1) % max_distinct_blizzard_state_count
     for dir in all_dirs:
         next_y,next_x=vecadd(curr,dir)
         if next_y>=len(matrices[next_time_modded]):
@@ -82,7 +87,7 @@ def solve(curr, end, time):
     if len(cands)==0:
         return best_length_seen
 
-    return min([solve(cand,end, time+1) for cand in cands])
+    return min([solve(cand, end, time_passed + 1) for cand in cands])
 
 
 def solve_wrapper(start,end,time_start,max_search_depth_solve):
@@ -97,14 +102,20 @@ def solve_wrapper(start,end,time_start,max_search_depth_solve):
         sys.exit(1)
     return score
 
+start2=time.time_ns()
+print((start2-start1)//1000000)
+
 ##SOLVE
 start=(0,1)
 #end=(5,6)
 end=(26,120)
-max_search_depth_solve=400
+max_search_depth_solve=330
 sys.setrecursionlimit(max_search_depth_solve*5)
 print("start p1")
+start3=time.time_ns()
 best_time=solve_wrapper(start,end,0,max_search_depth_solve)
+start4=time.time_ns()
+print((start4-start3)//1000000)
 print(f"p1 result={best_time}")
 
 best_time=solve_wrapper(end,start,best_time,max_search_depth_solve)
